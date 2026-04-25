@@ -1,4 +1,4 @@
-
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -24,7 +24,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 
 // connect DB
-mongoose.connect("mongodb://127.0.0.1:27017/authdb")
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
   .catch(err => console.log(err));
 
@@ -116,7 +116,7 @@ const verifyToken = (req, res, next) => {
   const token = authHeader.split(" ")[1]; // 👈 extract real token
 
   try {
-    const decoded = jwt.verify(token, "secretkey");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.userId = decoded.userId;
     next();
@@ -136,7 +136,11 @@ app.get("/api/auth/profile", verifyToken, (req, res) => {
   });
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+// app.listen(5000, () => {
+//   console.log("Server running on port 5000");
+// });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
