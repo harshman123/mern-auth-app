@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api"
+  baseURL: "https://mern-auth-app-a8kl.onrender.com/api"
 });
 
 // interceptor → runs before every request
